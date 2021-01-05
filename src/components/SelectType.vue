@@ -12,9 +12,10 @@
 <script>
 export default {
   name: "SelectType",
-  data: () => {
+  props: { initialValue: String },
+  data: vm => {
     return {
-      select: "PAID",
+      select: vm.initialValue,
       items: [
         { label: "Remunerado", value: "PAID" },
         { label: "Não Remunerado", value: "UNPAID" },
@@ -25,6 +26,7 @@ export default {
   },
   methods: {
     onSelectType(event) {
+      console.log(this.initialValue);
       this.$emit("change", event);
     },
   },

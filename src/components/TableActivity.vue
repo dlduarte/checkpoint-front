@@ -2,18 +2,17 @@
   <v-data-table
     :headers="headers"
     :items="items"
-    :items-per-page="5"
+    :items-per-page="10"
+    :item-class="getColor"
     class="elevation-1"
   >
     <template v-slot:item.type="{ item }">
-      <v-chip :color="getColor(item.type)">
-        <select v-bind:value="item.type" class="masked-option" disabled>
-          <option value="PAID">Remunerado</option>
-          <option value="UNPAID">Não Remunerado</option>
-          <option value="JUSTIFIED_ABSENCE">Falta Justificada</option>
-          <option value="UNEXCUSED_ABSENCE">Falta Não Justificada</option>
-        </select>
-      </v-chip>
+      <select v-bind:value="item.type" class="masked-option" disabled>
+        <option value="PAID">Remunerado</option>
+        <option value="UNPAID">Não Remunerado</option>
+        <option value="JUSTIFIED_ABSENCE">Falta Justificada</option>
+        <option value="UNEXCUSED_ABSENCE">Falta Não Justificada</option>
+      </select>
     </template>
   </v-data-table>
 </template>
@@ -32,14 +31,16 @@ export default {
     };
   },
   methods: {
-    getColor(type) {
-      switch (type) {
+    getColor(activity) {
+      switch (activity.type) {
         case "PAID":
-          return "green";
+          return "light-blue lighten-4";
+          case "JUSTIFIED_ABSENCE":
+            return "pink lighten-2";
         case "UNEXCUSED_ABSENCE":
-          return "red";
+          return "red lighten-1";
         default:
-          return "orange";
+          return "indigo lighten-3";
       }
     },
   },
@@ -49,7 +50,7 @@ export default {
 <style scoped>
 .masked-option {
   border: none;
-  color: #fff;
+  color: rgba(0, 0, 0, 0.87);
   -webkit-appearance: none;
   -moz-appearance: none;
   font-size: 0.9rem;

@@ -3,7 +3,8 @@
     <v-data-table
       :headers="headers"
       :items="summary.resume"
-      :items-per-page="5"
+      :items-per-page="10"
+      :item-class="getColor"
       class="elevation-1"
     ></v-data-table>
     <v-card
@@ -17,13 +18,30 @@
     >
       <v-container fluid>
         <v-row>
-          <v-col cols="12">
-            <label>Total de Horas remuneradas: <b>{{ summary.worked }}</b></label>
+          <v-col cols="8">
+            <v-row>
+              <v-col cols="12">
+                <label
+                  >Total de Horas remuneradas:
+                  <b>{{ summary.worked }}</b></label
+                >
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <label
+                  >Total de Horas não remuneradas:
+                  <b>{{ summary.strayed }}</b></label
+                >
+              </v-col>
+            </v-row>
           </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <label>Total de Horas não remuneradas: <b>{{ summary.strayed }}</b></label>
+          <v-col cols="4">
+            <v-btn
+              color="blue darken-2"
+              style="color: #fff"
+              >Lançamentos</v-btn
+            >
           </v-col>
         </v-row>
       </v-container>
@@ -42,8 +60,19 @@ export default {
       ],
     };
   },
+  methods: {
+    getColor(activity) {
+      switch (activity.type) {
+        case "PAID":
+          return "light-blue lighten-4";
+        case "JUSTIFIED_ABSENCE":
+          return "pink lighten-2";
+        case "UNEXCUSED_ABSENCE":
+          return "red lighten-1";
+        default:
+          return "indigo lighten-3";
+      }
+    },
+  },
 };
 </script>
-
-<style>
-</style>

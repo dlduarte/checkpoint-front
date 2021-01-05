@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-col cols="2">
-        <Calendar label="Data" />
+        <Calendar label="Data" @blur="onChangeReference" />
       </v-col>
       <v-col cols="4">
         <v-text-field
@@ -21,10 +21,15 @@
         ></v-text-field>
       </v-col>
       <v-col cols="2">
-        <SelectType @change="onSelectType" />
+        <SelectType v-bind:initialValue="type" @change="onSelectType" />
       </v-col>
       <v-col cols="2">
-        <v-btn color="green" style="color: #fff" v-on:click="newActivity" x-large>Inserir</v-btn
+        <v-btn
+          color="green"
+          style="color: #fff"
+          v-on:click="newActivity"
+          x-large
+          >Inserir</v-btn
         >
       </v-col>
     </v-row>
@@ -40,12 +45,13 @@
 </template>
 
 <script>
-import Calendar from './Calendar';
+import Calendar from "./Calendar";
 import SelectType from "./SelectType";
 import TableActivity from "./TableActivity";
 import SummaryActivity from "./SummaryActivity";
 
 import axios from "axios";
+import { today } from "../utilities/dateHandler";
 
 export default {
   name: "Index",
@@ -60,7 +66,7 @@ export default {
   },
   data() {
     return {
-      today: this.getToday(),
+      reference: today(),
       ended: new Date().toTimeString().substring(0, 5),
       name: "",
       type: "PAID",
@@ -73,27 +79,27 @@ export default {
     };
   },
   methods: {
-    getToday() {
-      const date = new Date();
-      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    },
     onSelectType(type) {
       this.type = type;
     },
+    onChangeReference(reference) {
+      this.reference = reference;
+      this.updateTable();
+    },
     updateTable() {
       axios
-        .get(`http://localhost:9100/activity/${this.today}`)
+        .get(`http://localhost:9100/activity/${this.reference}`)
         .then((response) => (this.activities = response.data))
         .then(
           axios
-            .get(`http://localhost:9100/activity/summary/${this.today}`)
+            .get(`http://localhost:9100/activity/summary/${this.reference}`)
             .then((response) => (this.summary = response.data))
         );
     },
     newActivity() {
       const activity = {
-        reference: this.today,
-        name: this.name.toUpperCase(),
+        reference: this.reference,
+        name: this.name,
         ended: this.ended,
         type: this.type,
       };

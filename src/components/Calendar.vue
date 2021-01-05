@@ -15,7 +15,7 @@
         persistent-hint
         prepend-icon="mdi-calendar"
         v-bind="attrs"
-        @blur="date = parseDate(dateFormatted)"
+        @blur="onBlurDate"
         v-on="on"
       ></v-text-field>
     </template>
@@ -28,38 +28,40 @@
 </template>
 
 <script>
-  export default {
-    data: vm => ({
-      date: new Date().toISOString().substr(0, 10),
-      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
-      control: false,
-    }),
+import { parse, today } from '../utilities/dateHandler';
 
-    computed: {
-      computedDateFormatted () {
-        return this.formatDate(this.date)
-      },
+export default {
+  name: "Calendar",
+  props: { label: String },
+  data: vm => ({
+    date: today(),
+    dateFormatted: vm.formatDate(today()),
+    control: false,
+  }),
+
+  computed: {
+    computedDateFormatted() {
+      return this.formatDate(this.date);
     },
+  },
 
-    watch: {
-      date (val) {
-        this.dateFormatted = this.formatDate(this.date)
-      },
+  watch: {
+    date(val) {
+      this.dateFormatted = this.formatDate(this.date);
+      this.$emit("blur", this.date);
     },
+  },
 
-    methods: {
-      formatDate (date) {
-        if (!date) return null
+  methods: {
+    formatDate(date) {
+      if (!date) return null;
 
-        const [year, month, day] = date.split('-')
-        return `${month}/${day}/${year}`
-      },
-      parseDate (date) {
-        if (!date) return null
-
-        const [month, day, year] = date.split('/')
-        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-      },
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
     },
-  }
+    onBlurDate(event) {
+      this.date = parse(event.target.value);
+    },
+  },
+};
 </script>
