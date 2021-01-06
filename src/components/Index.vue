@@ -17,28 +17,27 @@
           v-model="ended"
           id="ended"
           type="time"
-          label="Horário de finalização"
+          label="Finalização"
         ></v-text-field>
       </v-col>
       <v-col cols="2">
-        <SelectType v-bind:initialValue="type" @change="onSelectType" />
+        <SelectType :initialValue="type" @change="onSelectType" />
       </v-col>
       <v-col cols="2">
         <v-btn
-          color="green"
+          color="blue"
           style="color: #fff"
           v-on:click="newActivity"
-          x-large
           >Inserir</v-btn
         >
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="7">
-        <TableActivity v-bind:items="activities" />
+        <TableActivity :items="activities" />
       </v-col>
       <v-col cols="5">
-        <SummaryActivity v-bind:summary="summary" />
+        <SummaryActivity :summary="summary" />
       </v-col>
     </v-row>
   </v-container>

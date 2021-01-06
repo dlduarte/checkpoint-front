@@ -1,24 +1,29 @@
 <template>
   <div>
-    <v-data-table
-      :headers="headers"
-      :items="summary.resume"
-      :items-per-page="10"
-      :item-class="getColor"
-      class="elevation-1"
-    ></v-data-table>
-    <v-card
-      style="
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        box-shadow: 0px 5px 1px -2px rgba(0, 0, 0, 0.2),
-          0px 5px 2px 0px rgba(0, 0, 0, 0.14),
-          0px 5px 5px 0px rgba(0, 0, 0, 0.12);
-      "
-    >
+    <v-card class="mx-auto">
+    <v-list-item>
+      <v-row>
+        <v-col cols="10">Descição</v-col>
+        <v-col cols="2">Total</v-col>
+      </v-row>
+    </v-list-item>
+    <v-virtual-scroll min-height="50" max-height="300" :items="summary.resume" :item-height="50">
+      <template v-slot:default="{ item }">
+        <v-divider />
+        <v-list-item>
+          <v-row>
+            <v-col cols="10">{{ item.name }}</v-col>
+            <v-col cols="2">{{ item.total }}</v-col>
+          </v-row>
+        </v-list-item>
+      </template>
+    </v-virtual-scroll>
+    </v-card>
+    <br />
+    <v-card>
       <v-container fluid>
         <v-row>
-          <v-col cols="8">
+          <v-col cols="6">
             <v-row>
               <v-col cols="12">
                 <label
@@ -36,12 +41,9 @@
               </v-col>
             </v-row>
           </v-col>
-          <v-col cols="4">
-            <v-btn
-              color="blue darken-2"
-              style="color: #fff"
-              >Lançamentos</v-btn
-            >
+          <v-col></v-col>
+          <v-col cols="1">
+            <Releases :spends="summary.resume" />
           </v-col>
         </v-row>
       </v-container>
@@ -50,14 +52,19 @@
 </template>
 
 <script>
+import Releases from "./Releases";
+
 export default {
   props: { summary: Object },
+  components: {
+    Releases,
+  },
   data() {
     return {
       headers: [
         { text: "Descrição", value: "name" },
         { text: "Total", value: "total" },
-      ],
+      ]
     };
   },
   methods: {
@@ -73,6 +80,15 @@ export default {
           return "indigo lighten-3";
       }
     },
+    getSpends() {
+    this.spends = this.summary.resume
+      .filter(item => item.type === 'PAID')
+      .map(item => {
+        let command = '/spend';
+        return { name: item.name, command: command}
+      });
+    console.log(this.spends);
+  },
   },
 };
 </script>

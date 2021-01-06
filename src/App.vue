@@ -14,7 +14,7 @@
       </div>
     </v-app-bar>
 
-    <v-main>
+    <v-main style="background-color: #f7f0ed">
       <Index />
     </v-main>
   </v-app>
