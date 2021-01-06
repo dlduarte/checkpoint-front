@@ -10,12 +10,12 @@
         </v-row>
       </v-list-item>
       <v-virtual-scroll
-        min-height="50"
+        height="300"
         max-height="300"
         :items="items"
         :item-height="50"
       >
-        <template v-slot:default="{ item }">
+        <template v-slot="{ item }">
           <v-divider />
           <v-list-item @click.stop.prevent="editActivity(item)">
             <v-row>

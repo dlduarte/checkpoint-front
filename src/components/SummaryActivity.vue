@@ -7,7 +7,7 @@
         <v-col cols="2">Total</v-col>
       </v-row>
     </v-list-item>
-    <v-virtual-scroll min-height="50" max-height="300" :items="summary.resume" :item-height="50">
+    <v-virtual-scroll height="300" max-height="300" :items="summary.resume" :item-height="50">
       <template v-slot:default="{ item }">
         <v-divider />
         <v-list-item>
