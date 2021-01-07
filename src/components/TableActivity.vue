@@ -4,14 +4,14 @@
       <v-list-item>
         <v-row>
           <v-col cols="8">Descição</v-col>
-          <v-col cols="1">início</v-col>
+          <v-col cols="1">Início</v-col>
           <v-col cols="1">Fim</v-col>
           <v-col cols="2">Tipo</v-col>
         </v-row>
       </v-list-item>
       <v-virtual-scroll
-        height="300"
-        max-height="300"
+        :height="vsheight"
+        :max-height="vsmheight"
         :items="items"
         :item-height="50"
       >
@@ -37,54 +37,23 @@
         </template>
       </v-virtual-scroll>
     </v-card>
-    <v-dialog v-model="dialog" max-width="500">
-      <v-card>
-        <v-card-title>Editar registro</v-card-title>
-        <v-divider></v-divider>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12">
-              <v-text-field v-model="selected.name" label="Descrição" />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="4">
-              <v-text-field
-                v-model="selected.ended"
-                type="time"
-                label="Finalização"
-              />
-            </v-col>
-            <v-col cols="8">
-              <SelectType
-                :initialValue="selected.type"
-                @change="onSelectType"
-              />
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="closeDialog">
-            Cancelar
-          </v-btn>
-          <v-btn color="green darken-1" text @click="closeDialog">
-            Salvar
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <EditActivityForm
+      v-model="dialog"
+      :selected="selected"
+      @formchange="$emit('formchange')"
+    />
   </div>
 </template>
 
 <script>
-import SelectType from "./SelectType";
+import EditActivityForm from "./EditActivityForm";
+
+import axios from "axios";
 
 export default {
   props: { items: Array },
   components: {
-    SelectType,
+    EditActivityForm,
   },
   data() {
     return {
@@ -96,36 +65,26 @@ export default {
       },
     };
   },
-  methods: {
-    getColor(activity) {
-      switch (activity.type) {
-        case "PAID":
-          return "light-blue lighten-4";
-        case "JUSTIFIED_ABSENCE":
-          return "pink lighten-2";
-        case "UNEXCUSED_ABSENCE":
-          return "red lighten-1";
-        default:
-          return "indigo lighten-3";
+  computed: {
+    vsheight() {
+      if (this.items.length == 0) return 50;
+      return this.items.length * 50;
+    },
+    vsmheight() {
+      let heigth = window.innerHeight - window.innerHeight * 0.15; // I remove 15% from total heigth
+      let diff = heigth % 50; // I calculate the rest of the multiple of 50 (50 = list line heigth)
+
+      if (heigth + (diff % 50) == 0) { // if the rest + the heigth is a multiple of 50, I use it
+        return heigth + diff;
+      } else { // otherwise I use the height minus the rest
+        return heigth - diff;
       }
     },
+  },
+  methods: {
     editActivity(item) {
       this.selected = item;
       this.dialog = true;
-    },
-    onSelectType(type) {
-      this.selected.type = type;
-    },
-    resetSelected() {
-      this.selected = {
-        name: "",
-        ended: "00:00",
-        type: "PAID",
-      };
-    },
-    closeDialog() {
-      this.resetSelected();
-      this.dialog = false;
     },
   },
 };

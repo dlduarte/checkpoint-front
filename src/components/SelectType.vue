@@ -1,6 +1,6 @@
 <template>
   <v-select
-    v-model="select"
+    v-model="control"
     :items="items"
     item-text="label"
     item-value="value"
@@ -12,10 +12,19 @@
 <script>
 export default {
   name: "SelectType",
-  props: { initialValue: String },
-  data: vm => {
+  props: { value: String },
+  computed: {
+    control: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
+      },
+    },
+  },
+  data: (vm) => {
     return {
-      select: vm.initialValue,
       items: [
         { label: "Remunerado", value: "PAID" },
         { label: "Não Remunerado", value: "UNPAID" },
@@ -26,7 +35,6 @@ export default {
   },
   methods: {
     onSelectType(event) {
-      console.log(this.initialValue);
       this.$emit("change", event);
     },
   },
