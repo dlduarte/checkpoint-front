@@ -3,10 +3,10 @@
     <v-card class="mx-auto">
       <v-list-item>
         <v-row>
-          <v-col cols="8">Descição</v-col>
-          <v-col cols="1">Início</v-col>
-          <v-col cols="1">Fim</v-col>
-          <v-col cols="2">Tipo</v-col>
+          <v-col md="6" lg="8">Descição</v-col>
+          <v-col md="2" lg="1">Início</v-col>
+          <v-col md="2" lg="1">Fim</v-col>
+          <v-col md="2" lg="2">Tipo</v-col>
         </v-row>
       </v-list-item>
       <v-virtual-scroll
@@ -19,10 +19,10 @@
           <v-divider />
           <v-list-item @click.stop.prevent="editActivity(item)">
             <v-row>
-              <v-col cols="8">{{ item.name }}</v-col>
-              <v-col cols="1">{{ item.beginning }}</v-col>
-              <v-col cols="1">{{ item.ended }}</v-col>
-              <v-col cols="2">
+              <v-col md="6" lg="8">{{ item.name }}</v-col>
+              <v-col md="2" lg="1">{{ item.beginning }}</v-col>
+              <v-col md="2" lg="1">{{ item.ended }}</v-col>
+              <v-col md="2" lg="2">
                 <select :value="item.type" class="masked-option" disabled>
                   <option value="PAID">Remunerado</option>
                   <option value="UNPAID">Não Remunerado</option>
