@@ -1,23 +1,28 @@
 <template>
   <div>
     <v-card class="mx-auto">
-    <v-list-item>
-      <v-row>
-        <v-col cols="10">Descição</v-col>
-        <v-col cols="2">Total</v-col>
-      </v-row>
-    </v-list-item>
-    <v-virtual-scroll height="300" max-height="300" :items="summary.resume" :item-height="50">
-      <template v-slot:default="{ item }">
-        <v-divider />
-        <v-list-item>
-          <v-row>
-            <v-col cols="10">{{ item.name }}</v-col>
-            <v-col cols="2">{{ item.total }}</v-col>
-          </v-row>
-        </v-list-item>
-      </template>
-    </v-virtual-scroll>
+      <v-list-item>
+        <v-row>
+          <v-col cols="10">Descição</v-col>
+          <v-col cols="2">Total</v-col>
+        </v-row>
+      </v-list-item>
+      <v-virtual-scroll
+        height="300"
+        max-height="300"
+        :items="summary.resume"
+        :item-height="50"
+      >
+        <template v-slot:default="{ item }">
+          <v-divider />
+          <v-list-item>
+            <v-row>
+              <v-col cols="10">{{ item.name }}</v-col>
+              <v-col cols="2">{{ item.total }}</v-col>
+            </v-row>
+          </v-list-item>
+        </template>
+      </v-virtual-scroll>
     </v-card>
     <br />
     <v-card>
@@ -64,7 +69,7 @@ export default {
       headers: [
         { text: "Descrição", value: "name" },
         { text: "Total", value: "total" },
-      ]
+      ],
     };
   },
   methods: {
@@ -81,14 +86,13 @@ export default {
       }
     },
     getSpends() {
-    this.spends = this.summary.resume
-      .filter(item => item.type === 'PAID')
-      .map(item => {
-        let command = '/spend';
-        return { name: item.name, command: command}
-      });
-    console.log(this.spends);
-  },
+      this.spends = this.summary.resume
+        .filter((item) => item.type === "PAID")
+        .map((item) => {
+          let command = "/spend";
+          return { name: item.name, command: command };
+        });
+    },
   },
 };
 </script>

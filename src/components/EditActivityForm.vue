@@ -40,6 +40,7 @@
 import SelectType from "./SelectType";
 
 import axios from "axios";
+import { activity_update, errorHandling } from '../api';
 
 export default {
   name: "EditActivityForm",
@@ -74,9 +75,10 @@ export default {
     },
     editActivity() {
       axios
-        .put("http://localhost:9100/activity", this.activity)
+        .put(activity_update, this.activity)
         .then(() => this.$emit("formchange"))
-        .then(() => (this.control = false));
+        .then(() => (this.control = false))
+        .catch(err => this.$toast.error(errorHandling(err)));
     },
   },
 };

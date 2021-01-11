@@ -31,7 +31,11 @@
       <v-card-text>
         <v-row>
           <v-col cols="12">
-            <v-text-field ref="focusable" v-model="activity.name" label="Descrição" />
+            <v-text-field
+              ref="focusable"
+              v-model="activity.name"
+              label="Descrição"
+            />
           </v-col>
         </v-row>
         <v-row align="center">
@@ -62,6 +66,7 @@ import Calendar from "./Calendar";
 import SelectType from "./SelectType";
 
 import axios from "axios";
+import { activity_save, errorHandling } from '../api';
 
 export default {
   name: "NewActivityForm",
@@ -89,7 +94,6 @@ export default {
           let command = "/spend";
           return { name: item.name, command: command };
         });
-      console.log(this.spends);
     },
     onSelectType(type) {
       this.activity.type = type;
@@ -104,9 +108,10 @@ export default {
     newActivity() {
       this.activity.reference = this.reference;
       axios
-        .post("http://localhost:9100/activity", this.activity)
+        .post(activity_save, this.activity)
         .then(() => this.emitChange())
-        .then(() => this.reset());
+        .then(() => this.reset())
+        .catch(err => this.$toast.error(errorHandling(err)));
     },
     reset() {
       this.activity = {
