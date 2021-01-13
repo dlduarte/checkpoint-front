@@ -1,5 +1,5 @@
-const BASE = 'http://localhost:9100';
-//const BASE = 'http://35.199.121.110:9001';
+//const BASE = 'http://localhost:9100';
+const BASE = 'http://35.199.121.110:9001';
 
 export const auth_authenticate = `${BASE}/auth/authenticate`
 export const auth_register = `${BASE}/auth/register`
