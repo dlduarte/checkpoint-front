@@ -1,13 +1,14 @@
-//const BASE = 'http://localhost:9100';
-const BASE = 'http://35.199.121.110:9001';
+import { logout } from './routes';
 
-export const auth_authenticate = `${BASE}/auth/authenticate`
-export const auth_register = `${BASE}/auth/register`
+const HOST = process.env.VUE_APP_API_HOST;
 
-export const activity_getAll = reference => `${BASE}/activity/${reference}`
-export const activity_getSummary = reference => `${BASE}/activity/summary/${reference}`
-export const activity_save = `${BASE}/activity/`
-export const activity_update = `${BASE}/activity/`
+export const auth_authenticate = `${HOST}/auth/authenticate`
+export const auth_register = `${HOST}/auth/register`
+
+export const activity_getAll = reference => `${HOST}/activity/${reference}`
+export const activity_getSummary = reference => `${HOST}/activity/summary/${reference}`
+export const activity_save = `${HOST}/activity/`
+export const activity_update = `${HOST}/activity/`
 
 export const errorHandling = err => {
     let error = "";
@@ -53,6 +54,12 @@ export const errorHandling = err => {
                         break;
                 }
 
+                break;
+            }
+        case 403:
+            {
+                error = "Sessão expirada!";
+                logout();
                 break;
             }
         case 500:
