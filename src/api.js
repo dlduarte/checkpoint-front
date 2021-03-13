@@ -10,6 +10,9 @@ export const activity_getSummary = reference => `${HOST}/activity/summary/${refe
 export const activity_save = `${HOST}/activity/`
 export const activity_update = `${HOST}/activity/`
 
+export const setting_getAll = `${HOST}/settings`
+export const setting_save = `${HOST}/settings`
+
 export const errorHandling = err => {
     let error = "";
 

@@ -16,11 +16,14 @@
         </v-col>
       </v-row>
     </v-container>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import Navbar from "../Navbar";
+import Footer from "../Footer";
+
 import TableActivity from "../TableActivity";
 import NewActivityForm from "../NewActivityForm";
 
@@ -32,6 +35,7 @@ export default {
   name: "Activities",
   components: {
     Navbar,
+    Footer,
     TableActivity,
     NewActivityForm,
   },

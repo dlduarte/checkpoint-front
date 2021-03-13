@@ -2,8 +2,9 @@
   <div>
     <v-card class="mx-auto">
       <v-list-item>
+        <v-btn icon small disabled></v-btn>
         <v-row>
-          <v-col md="6" lg="8">Descição</v-col>
+          <v-col md="7" lg="8">Descição</v-col>
           <v-col md="2" lg="1">Início</v-col>
           <v-col md="2" lg="1">Fim</v-col>
           <v-col md="2" lg="2">Tipo</v-col>
@@ -17,9 +18,13 @@
       >
         <template v-slot="{ item }">
           <v-divider />
-          <v-list-item @click.stop.prevent="editActivity(item)">
-            <v-row>
-              <v-col md="6" lg="8">{{ item.name }}</v-col>
+          <input type="hidden" id="clipboard-activity" />
+          <v-list-item>
+            <v-btn icon small @click.stop.prevent="copyToClipboard(item.name)">
+              <v-icon color="blue" small>mdi-content-copy</v-icon>
+            </v-btn>
+            <v-row @click.stop.prevent="editActivity(item)">
+              <v-col md="7" lg="8">{{ item.name }}</v-col>
               <v-col md="2" lg="1">{{ item.beginning }}</v-col>
               <v-col md="2" lg="1">{{ item.ended }}</v-col>
               <v-col md="2" lg="2">
@@ -38,7 +43,7 @@
       </v-virtual-scroll>
     </v-card>
     <EditActivityForm
-      v-model="dialog"
+      v-model="dlgEditActivity"
       :selected="selected"
       @formchange="$emit('formchange')"
     />
@@ -48,7 +53,7 @@
 <script>
 import EditActivityForm from "./EditActivityForm";
 
-import axios from "axios";
+import { copy } from "../utilities/clipboard";
 
 export default {
   props: { items: Array },
@@ -57,7 +62,7 @@ export default {
   },
   data() {
     return {
-      dialog: false,
+      dlgEditActivity: false,
       selected: {
         name: "",
         ended: "00:00",
@@ -71,12 +76,14 @@ export default {
       return this.items.length * 50;
     },
     vsmheight() {
-      let heigth = window.innerHeight - window.innerHeight * 0.15; // I remove 15% from total heigth
+      let heigth = window.innerHeight - window.innerHeight * 0.2; // I remove 20% from total heigth
       let diff = heigth % 50; // I calculate the rest of the multiple of 50 (50 = list line heigth)
 
-      if (heigth + (diff % 50) == 0) { // if the rest + the heigth is a multiple of 50, I use it
+      if (heigth + (diff % 50) == 0) {
+        // if the rest + the heigth is a multiple of 50, I use it
         return heigth + diff;
-      } else { // otherwise I use the height minus the rest
+      } else {
+        // otherwise I use the height minus the rest
         return heigth - diff;
       }
     },
@@ -84,7 +91,16 @@ export default {
   methods: {
     editActivity(item) {
       this.selected = item;
-      this.dialog = true;
+      this.dlgEditActivity = true;
+    },
+    copyToClipboard: function (name) {
+      const success = copy(name, "clipboard-activity");
+      if (success) {
+        this.$toast.info(`Copiado '${name}'`, {
+          color: "gray",
+          timeout: 3000,
+        });
+      }
     },
   },
 };
