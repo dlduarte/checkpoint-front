@@ -76,6 +76,8 @@ export default {
           .then((resp) => (this.summary = resp.data))
           .catch((err) => this.$toast.error(errorHandling(err)));
       }
+
+      console.log(JSON.stringify(this.summary, null, 2));
     },
   },
 };

@@ -12,6 +12,10 @@ export const activity_update = `${HOST}/activity/`
 
 export const setting_getAll = `${HOST}/settings`
 export const setting_save = `${HOST}/settings`
+export const setting_saveAll = `${HOST}/settings/all`
+
+export const issue_getAll = `${HOST}/issue`
+export const issue_applySpend = (projectId, issueId, duration) => `${HOST}/issue/spend?projectId=${projectId}&issueId=${issueId}&duration=${duration}`
 
 export const errorHandling = err => {
     let error = "";

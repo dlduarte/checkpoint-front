@@ -8,8 +8,8 @@
           <v-col cols="12">
             <v-text-field
               v-model="item.value"
-              type="time"
-              label="Início do expediente"
+              :type="item.type"
+              :label="item.description"
             />
           </v-col>
         </v-row>
@@ -30,7 +30,7 @@
 
 <script>
 import axios from "axios";
-import { setting_save, errorHandling } from "../api";
+import { setting_saveAll, errorHandling } from "../api";
 
 export default {
   name: "SettingsForm",
@@ -48,7 +48,7 @@ export default {
   methods: {
     saveSettings() {
       axios
-        .post(setting_save, this.settings[0])
+        .post(setting_saveAll, this.settings)
         .then(() => (this.control = false))
         .catch((err) => this.$toast.error(errorHandling(err)));
     },
