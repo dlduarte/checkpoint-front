@@ -54,7 +54,7 @@ export default {
   props: { spends: Array },
   computed: {
     haveCommand: function () {
-      return this.spends.filter(item => item.type == "PAID");
+      return this.spends.filter(item => item.type === "PAID");
     },
   },
   mounted() {
